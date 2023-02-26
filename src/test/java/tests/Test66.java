@@ -1,0 +1,46 @@
+package tests;
+
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Test66 {
+
+	public static void main(String[] args) throws Exception
+	{
+		WebDriverManager.chromedriver().setup();
+        RemoteWebDriver driver=new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        SimpleDateFormat sf=new SimpleDateFormat("dd-mmm-yy-hh-mm-ss");
+        driver.get("http://www.youtube.com");
+        Cookie cc=new Cookie("magnitia","abdulkalam");
+        driver.manage().addCookie(cc);
+        
+        Set<Cookie> s=driver.manage().getCookies();
+        List<Cookie> l=new ArrayList<Cookie>(s);
+        
+        Cookie e=driver.manage().getCookieNamed("NID");
+        driver.manage().deleteCookie(l.get(1));
+        driver.manage().deleteCookieNamed(l.get(0).getName());
+        driver.manage().deleteAllCookies();
+        
+        System.out.println("count of cookies is "+l.size());
+        System.out.println("--------------------");
+        for(Cookie c:l)
+        {
+        	System.out.println(c.getName()+"expires on "+c.getExpiry());
+        }
+        driver.quit();
+        
+	}
+
+}
